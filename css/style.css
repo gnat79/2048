@@ -1,0 +1,32 @@
+body {
+    background-color: black;
+    padding: 50px;
+}
+
+.container {
+    border: 2px solid #aaaaaa;
+    font-family: Menlo, Monaco, monospace;
+    font-size: 28px;
+    border-radius: 15px;
+    color: aliceblue;
+    width: 440px;
+    margin: auto;
+    padding: 5px;
+    background-color: slategrey;
+    overflow: auto;
+}
+
+.tile {
+    border: 1px solid #828282;
+    border-radius: 5px;
+    color: black;
+    background-color: palegreen;
+    width: 88px;
+    height: 88px;
+    padding: 5px;
+    margin: 5px;
+    float: left;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
