@@ -3,7 +3,7 @@ body {
     padding: 50px;
 }
 
-div#game_board {
+#game_board {
     border: 2px solid #aaaaaa;
     font-family: Menlo, Monaco, monospace;
     font-size: 28px;
@@ -23,11 +23,11 @@ div#game_board {
     height: 88px;
     padding: 5px;
     margin: 5px;
-    float: left;
-    display: flex;
-    justify-content: center;
-    align-items: center;
+    /*display: flex;*/
+    /*justify-content: center;*/
+    /*align-items: center;*/
     position: absolute;
+    z-index: 1;
 }
 
 .holder {
@@ -35,12 +35,16 @@ div#game_board {
     border-radius: 7px;
     color: black;
     background-color: #aaaaaa;
+    z-index: 0;
 }
 
 .active {
     border: 1px solid #828282;
     border-radius: 7px;
     color: black;
+    background-color: palegreen;
+    opacity: 90%;
+    z-index: 2;
 }
 
 div.row0 {

@@ -12,28 +12,39 @@ $().ready(function() {
         board.push(row);
     }
 
-    $("div.active").click(function() {
-        $(this).toggleClass("row1");
-        return false;
-    });
-
-    $("div.holder").click(function() {
+    $("#game_board").on('click', 'div.tile', function() {
+        alert($(this).attr("class"));
+        if ($(this).hasClass("holder")) {
+            alert("holder");
+        }
+        else if ($(this).hasClass("active")) {
+            alert("active");
+        }
+        else {
+            alert($(this).attr("class"));
+            return false;
+        }
+        // $(this).toggleClass("active holder");
         addTile($(this).attr('class'));
+        return false;
     });
     return false;
 });
 
 
 function addTile(position) {
-    let row = position.match('/row(\d)/');
-    alert(row[0]);
+    let row = (position.match(/row(\d)/))[1];
+    let col = (position.match(/col(\d)/))[1];
+    alert("Adding a new tile at [" + row + ", " + col + "]");
     let $newTile = $( '<div class="tile"></div>' );
     $newTile.addClass(position);
     $newTile.toggleClass("active holder");
     $("#game_board").append($newTile);
+    board[row][col].push($newTile);
+    alert("Success!");
     return false;
 }
 
-function setValue(tile, power) {
-    let color = blue;
-}
+// function setValue(tile, power) {
+//     let color = blue;
+// }
