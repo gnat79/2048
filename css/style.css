@@ -42,7 +42,7 @@ body {
     border: 1px solid #828282;
     border-radius: 7px;
     color: black;
-    background-color: palegreen;
+    background-color: #CCCCFF;
     opacity: 90%;
     z-index: 2;
 }
