@@ -23,9 +23,9 @@ body {
     height: 88px;
     padding: 5px;
     margin: 5px;
-    /*display: flex;*/
-    /*justify-content: center;*/
-    /*align-items: center;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
     position: absolute;
     z-index: 1;
 }
