@@ -3,24 +3,22 @@ body {
     padding: 50px;
 }
 
-.container {
+div#game_board {
     border: 2px solid #aaaaaa;
     font-family: Menlo, Monaco, monospace;
     font-size: 28px;
     border-radius: 15px;
     color: aliceblue;
     width: 440px;
+    height: 440px;
     margin: auto;
     padding: 5px;
     background-color: slategrey;
     overflow: auto;
+    position: relative;
 }
 
 .tile {
-    border: 1px solid #828282;
-    border-radius: 5px;
-    color: black;
-    background-color: palegreen;
     width: 88px;
     height: 88px;
     padding: 5px;
@@ -29,4 +27,58 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
+}
+
+.holder {
+    border: 1px solid #828282;
+    border-radius: 7px;
+    color: black;
+    background-color: #aaaaaa;
+}
+
+.active {
+    border: 1px solid #828282;
+    border-radius: 7px;
+    color: black;
+    background-color: palegreen;
+}
+
+div.row1 {
+    position: absolute;
+    bottom: 5px;
+}
+
+div.row2 {
+    position: absolute;
+    bottom: 115px;
+}
+
+div.row3 {
+    position: absolute;
+    bottom: 225px;
+}
+
+div.row4 {
+    position: absolute;
+    bottom: 335px;
+}
+
+div.col1 {
+    position: absolute;
+    left: 5px;
+}
+
+div.col2 {
+    position: absolute;
+    left: 115px;
+}
+
+div.col3 {
+    position: absolute;
+    left: 225px;
+}
+
+div.col4 {
+    position: absolute;
+    left: 335px;
 }
