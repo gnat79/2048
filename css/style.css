@@ -27,6 +27,7 @@ div#game_board {
     display: flex;
     justify-content: center;
     align-items: center;
+    position: absolute;
 }
 
 .holder {
@@ -40,45 +41,36 @@ div#game_board {
     border: 1px solid #828282;
     border-radius: 7px;
     color: black;
-    background-color: palegreen;
 }
 
-div.row1 {
-    position: absolute;
+div.row0 {
     bottom: 5px;
 }
 
-div.row2 {
-    position: absolute;
+div.row1 {
     bottom: 115px;
 }
 
-div.row3 {
-    position: absolute;
+div.row2 {
     bottom: 225px;
 }
 
-div.row4 {
-    position: absolute;
+div.row3 {
     bottom: 335px;
 }
 
-div.col1 {
-    position: absolute;
+div.col0 {
     left: 5px;
 }
 
-div.col2 {
-    position: absolute;
+div.col1 {
     left: 115px;
 }
 
-div.col3 {
-    position: absolute;
+div.col2 {
     left: 225px;
 }
 
-div.col4 {
-    position: absolute;
+div.col3 {
     left: 335px;
 }
