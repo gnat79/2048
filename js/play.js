@@ -1,5 +1,7 @@
 // The game board [row][col]
 var board = [];
+
+// Background, foreground
 var colors = {
     2: ["#CCCCFF", "black"],
     4: ["#9999FF", "black"],
@@ -14,7 +16,7 @@ var colors = {
     2048: ["#005604", "white"],
     4096: ["#008906", "black"],
     8192: ["#FFEE00", "black"],
-    16384: ["#EE00FF", "black"]
+    16384: ["#EE00FF", "white"]
 };
 
 
@@ -28,6 +30,7 @@ $().ready(function () {
         board.push(row);
     }
 
+    // Add a tile where clicked, or else double the value of the clicked tile.
     $("#game_board").on('mousedown', 'div.tile', function () {
         if($(this).hasClass("active")) {
             updateTile($(this));
@@ -36,6 +39,30 @@ $().ready(function () {
         }
         return false;
     });
+
+    // Handle arrow keys
+    $(document).keydown(function(event) {
+        switch (event.keyCode) {
+            case 37: {
+                slideTiles("left");
+                break;
+            }
+            case 38: {
+                slideTiles("up");
+                break;
+            }
+            case 39: {
+                slideTiles("right");
+                break;
+            }
+            case 40: {
+                slideTiles("down");
+                break;
+            }
+        }
+        return false;
+    });
+
     return false;
 });
 
@@ -63,4 +90,13 @@ function addTile(position) {
     $newTile.text(board[row][col]);
     $("#game_board").append($newTile);
     return false;
+}
+
+function slideTiles(direction) {
+    switch (direction) {
+        case "down": alert(direction); break;
+        case "up": alert(direction); break;
+        case "left": alert(direction); break;
+        case "right": alert(direction); break;
+    }
 }

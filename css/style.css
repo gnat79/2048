@@ -18,6 +18,22 @@ body {
     position: relative;
 }
 
+#splash {
+    border: none;
+    font-family: Menlo, Monaco, monospace;
+    font-size: 28px;
+    border-radius: 15px;
+    color: aliceblue;
+    width: 500px;
+    height: 500px;
+    padding: none;
+    opacity: 20%;
+    background-color: indigo;
+    position: relative;
+    margin: auto;
+    z-index: 100;
+}
+
 .tile {
     width: 88px;
     height: 88px;
