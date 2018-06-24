@@ -1,9 +1,9 @@
 // The game board [row][col]
-var board = [];
+let board = [];
 
 // Background, foreground
-var textColor = "#E5E1D3";
-var colors = {
+let textColor = "#E5E1D3";
+let colors = {
     2: "#CAD2C5",
     4: "#84A98C",
     8: "#52796F",
@@ -36,7 +36,8 @@ $().ready(function () {
         if($(this).hasClass("active")) {
             updateTile($(this));
         } else {
-            addTile($(this).attr('class'));
+            let [row, col] = getTileLocation($(this));
+            addTile(row, col);
         }
         return false;
     });
@@ -88,9 +89,7 @@ function updateTile($tile) {
 }
 
 
-function addTile(position) {
-    let row = (position.match(/row(\d)/))[1];
-    let col = (position.match(/col(\d)/))[1];
+function addTile(row, col) {
     let $newTile = $('<div class="tile"></div>');
     $newTile.addClass(position);
     $newTile.toggleClass("active holder");
@@ -141,8 +140,15 @@ function slideTileRight($tile, row, col) {
         } else if (col === 1) {
             // do something
         } else {
-            //do something
+            // do something
         }
         let nextRightValue = board[row][col + 1];
     }
+}
+
+function getTileLocation($tile) {
+    let thisTileClasses = $tile.attr("class");
+    let row = (thisTileClasses.match(/row(\d)/))[1];
+    let col = (thisTileClasses.match(/col(\d)/))[1];
+    return [row, col];
 }
