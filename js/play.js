@@ -36,7 +36,7 @@ $().ready(function () {
         if($(this).hasClass("active")) {
             updateTile($(this));
         } else {
-            let [row, col] = getTileLocation($(this));
+            let [row, col] = getPosition($(this));
             addTile(row, col);
         }
         return false;
@@ -76,9 +76,7 @@ $().ready(function () {
 });
 
 function updateTile($tile) {
-    let position = $tile.attr("class");
-    let row = (position.match(/row(\d)/))[1];
-    let col = (position.match(/col(\d)/))[1];
+    let [row, col] = getPosition($tile);
     let value = (board[row][col] *= 2);
     if (value < 16385) {
         $tile.text(value);
@@ -91,7 +89,7 @@ function updateTile($tile) {
 
 function addTile(row, col) {
     let $newTile = $('<div class="tile"></div>');
-    $newTile.addClass(position);
+    $newTile.addClass("row" + row + " col" + col);
     $newTile.toggleClass("active holder");
     let value = 2;
     board[row][col] = value;
@@ -130,23 +128,21 @@ function slideAllTilesRight() {
 function slideTileRight($tile, row, col) {
     let colsToSlide = 3-col; // Distance from here to last column
     if (colsToSlide > 0) {
-        let thisTileValue = board[row][col];
-        if (board[row][col+1] === thisTileValue) {
-            let selector = "div.active.row" + row + ".col3";
-            let $tileRight = $(selector);
-            if ($tileRight[0]. === thisTileValue) {
-
-            }
+        let value = board[row][col];
+        let valueRight = board[row][col+1];
+        if (valueRight === value) {
+            board[row][col+1] *= 2;
         } else if (col === 1) {
             // do something
         } else {
             // do something
         }
         let nextRightValue = board[row][col + 1];
+        alert(nextRightValue);
     }
 }
 
-function getTileLocation($tile) {
+function getPosition($tile) {
     let thisTileClasses = $tile.attr("class");
     let row = (thisTileClasses.match(/row(\d)/))[1];
     let col = (thisTileClasses.match(/col(\d)/))[1];
