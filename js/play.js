@@ -4,10 +4,10 @@ var board = [];
 // Background, foreground
 var colors = {
     2: ["#CCCCFF", "black"],
-    4: ["#9999FF", "black"],
-    8: ["#6565FF", "black"],
-    16: ["#3232FF", "black"],
-    32: ["#0000FF", "black"],
+    4: ["#9999FF", "white"],
+    8: ["#6565FF", "white"],
+    16: ["#3232FF", "white"],
+    32: ["#0000FF", "white"],
     64: ["#0000CC", "white"],
     128:["#000099", "white"],
     256: ["#000066", "white"],
@@ -42,23 +42,30 @@ $().ready(function () {
 
     // Handle arrow keys
     $(document).keydown(function(event) {
-        switch (event.keyCode) {
+        let keyCode = event.which;
+        switch (keyCode) {
             case 37: {
                 slideTiles("left");
+                event.preventDefault();
                 break;
             }
             case 38: {
                 slideTiles("up");
+                event.preventDefault();
                 break;
             }
             case 39: {
                 slideTiles("right");
+                event.preventDefault();
                 break;
             }
             case 40: {
                 slideTiles("down");
+                event.preventDefault();
                 break;
             }
+            default:
+                return;
         }
         return false;
     });
