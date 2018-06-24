@@ -2,21 +2,22 @@
 var board = [];
 
 // Background, foreground
+var textColor = "#E5E1D3";
 var colors = {
-    2: ["#CCCCFF", "black"],
-    4: ["#9999FF", "white"],
-    8: ["#6565FF", "white"],
-    16: ["#3232FF", "white"],
-    32: ["#0000FF", "white"],
-    64: ["#0000CC", "white"],
-    128:["#000099", "white"],
-    256: ["#000066", "white"],
-    512: ["#000032", "white"],
-    1024: ["#000000", "white"],
-    2048: ["#005604", "white"],
-    4096: ["#008906", "black"],
-    8192: ["#FFEE00", "black"],
-    16384: ["#EE00FF", "white"]
+    2: "#CAD2C5",
+    4: "#84A98C",
+    8: "#52796F",
+    16: "#354F52",
+    32: "#2F3E46",
+    64: "#5171A5",
+    128:"#454372",
+    256: "#2F2963",
+    512: "#320A28",
+    1024: "#6E2594",
+    2048: "#7B4B94",
+    4096: "#92374D",
+    8192: "#1B263B",
+    16384: "black",
 };
 
 
@@ -80,8 +81,8 @@ function updateTile($tile) {
     let value = (board[row][col] *= 2);
     if (value < 16385) {
         $tile.text(value);
-        $tile.css("background-color", colors[value][0]);
-        $tile.css("color", colors[value][1]);
+        $tile.css("background-color", colors[value]);
+        $tile.css("color", textColor);
     }
     return false;
 }
@@ -93,8 +94,11 @@ function addTile(position) {
     let $newTile = $('<div class="tile"></div>');
     $newTile.addClass(position);
     $newTile.toggleClass("active holder");
-    board[row][col] = 2;
+    let value = 2;
+    board[row][col] = value;
     $newTile.text(board[row][col]);
+    $newTile.css("background-color", colors[value]);
+    $newTile.css("color", "#3D3C38");
     $("#game_board").append($newTile);
     return false;
 }
@@ -104,6 +108,41 @@ function slideTiles(direction) {
         case "down": alert(direction); break;
         case "up": alert(direction); break;
         case "left": alert(direction); break;
-        case "right": alert(direction); break;
+        case "right": {
+            slideAllTilesRight();
+            break;
+        }
+    }
+}
+
+function slideAllTilesRight() {
+    for (let col = 2; col > -1; col--) {
+        for (let row = 0; row < 4; row++) {
+            let selector = "div.active.row" + row + ".col" + col;
+            let $tile = $(selector);
+            if ($tile.length > 0) {
+                //alert("Found " + $tile.length + " tile with value " + $tile[0].innerHTML);
+                slideTileRight($tile[0], row, col);
+            }
+        }
+    }
+}
+
+function slideTileRight($tile, row, col) {
+    let colsToSlide = 3-col; // Distance from here to last column
+    if (colsToSlide > 0) {
+        let thisTileValue = board[row][col];
+        if (board[row][col+1] === thisTileValue) {
+            let selector = "div.active.row" + row + ".col3";
+            let $tileRight = $(selector);
+            if ($tileRight[0]. === thisTileValue) {
+
+            }
+        } else if (col === 1) {
+            // do something
+        } else {
+            //do something
+        }
+        let nextRightValue = board[row][col + 1];
     }
 }

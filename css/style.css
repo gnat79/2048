@@ -4,7 +4,7 @@ body {
 }
 
 #game_board {
-    border: 2px solid #aaaaaa;
+    border: 2px solid #393938;
     font-family: Menlo, Monaco, monospace;
     font-size: 28px;
     border-radius: 15px;
@@ -47,7 +47,7 @@ body {
 }
 
 .holder {
-    border: 1px solid #828282;
+    border: 1px solid #6E6E6E;
     border-radius: 7px;
     color: black;
     background-color: #aaaaaa;
@@ -57,9 +57,7 @@ body {
 .active {
     border: 1px solid #828282;
     border-radius: 7px;
-    color: black;
-    background-color: #CCCCFF;
-    opacity: 90%;
+    color: #E5E1D3;
     z-index: 2;
 }
 
