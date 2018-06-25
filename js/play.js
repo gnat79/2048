@@ -1,6 +1,8 @@
 // The game board [row][col]
 let board = [];
 
+let score = 0;
+
 // Background, foreground
 let textColor = "#E5E1D3";
 let colors = {
@@ -10,16 +12,15 @@ let colors = {
     16: "#354F52",
     32: "#2F3E46",
     64: "#5171A5",
-    128:"#454372",
-    256: "#2F2963",
-    512: "#320A28",
-    1024: "#6E2594",
-    2048: "#7B4B94",
-    4096: "#92374D",
-    8192: "#1B263B",
-    16384: "black",
+    128:"#36558F",
+    256: "#4C2C69",
+    512: "#42253B",
+    1024: "#832232",
+    2048: "#963D5A",
+    4096: "#C16E70",
+    8192: "#9E5E31",
+    16384: "#FF6F59",
 };
-
 
 $().ready(function () {
     // Initialize the board to empty.
@@ -34,7 +35,10 @@ $().ready(function () {
     // Add a tile where clicked, or else double the value of the clicked tile.
     $("#game_board").on('mousedown', 'div.tile', function () {
         if($(this).hasClass("active")) {
+            let [row, col] = getPosition($(this));
+            board[row][col] *= 2;
             updateTile($(this));
+
         } else {
             let [row, col] = getPosition($(this));
             addTile(row, col);
@@ -77,7 +81,7 @@ $().ready(function () {
 
 function updateTile($tile) {
     let [row, col] = getPosition($tile);
-    let value = (board[row][col] *= 2);
+    let value = board[row][col];
     if (value < 16385) {
         $tile.text(value);
         $tile.css("background-color", colors[value]);
@@ -116,29 +120,35 @@ function slideAllTilesRight() {
     for (let col = 2; col > -1; col--) {
         for (let row = 0; row < 4; row++) {
             let selector = "div.active.row" + row + ".col" + col;
-            let $tile = $(selector);
-            if ($tile.length > 0) {
+            let tile = $(selector);
+            if (tile.length > 0) {
                 //alert("Found " + $tile.length + " tile with value " + $tile[0].innerHTML);
-                slideTileRight($tile[0], row, col);
+                slideTileRight($(tile[0]), row, col);
             }
         }
     }
 }
 
 function slideTileRight($tile, row, col) {
-    let colsToSlide = 3-col; // Distance from here to last column
+    let thisTileValue = board[row][col];
+    let colsToSlide = 3 - col;
     if (colsToSlide > 0) {
-        let value = board[row][col];
-        let valueRight = board[row][col+1];
-        if (valueRight === value) {
-            board[row][col+1] *= 2;
-        } else if (col === 1) {
-            // do something
-        } else {
-            // do something
+        let shift;
+        for (shift = 1; shift <= colsToSlide; shift++) {
+            let value = board[row][col + shift];
+            if (value === thisTileValue) {
+                let selector = "div.active.row" + row + ".col" + (col + shift);
+                let $oldTile = $(selector)[0];
+                moveTileToPosition($tile, row, col, row, col + shift);
+                board[row][col + shift] *= 2;
+                score += board[row][col + shift];
+                updateScoreDisplay();
+                updateTile($tile);
+                $oldTile.remove();
+            } else if (value !== undefined) {
+                break;
+            }
         }
-        let nextRightValue = board[row][col + 1];
-        alert(nextRightValue);
     }
 }
 
@@ -147,4 +157,15 @@ function getPosition($tile) {
     let row = (thisTileClasses.match(/row(\d)/))[1];
     let col = (thisTileClasses.match(/col(\d)/))[1];
     return [row, col];
+}
+
+function moveTileToPosition($tile, currentRow, currentCol, newRow, newCol) {
+    board[currentRow][currentCol] = 0;
+    $tile.removeClass("row" + currentRow + " col" + currentCol);
+    $tile.addClass("row" + newRow + " col" + newCol);
+}
+
+function updateScoreDisplay() {
+    let scoreDiv = $("#score")[0];
+    scoreDiv.innerHTML = "Score: " + score;
 }

@@ -1,6 +1,12 @@
 body {
     background-color: black;
+    margin: auto;
     padding: 50px;
+}
+
+#wrapper {
+    margin: auto;
+    width: 775px;
 }
 
 #game_board {
@@ -11,11 +17,35 @@ body {
     color: aliceblue;
     width: 440px;
     height: 440px;
-    margin: auto;
     padding: 5px;
     background-color: slategrey;
     overflow: auto;
-    position: relative;
+    float: left;
+    position: absolute;
+}
+
+#dashboard {
+    width: 250px;
+    height: 440px;
+    border: 2px solid #393938;
+    font-family: Menlo, Monaco, monospace;
+    font-size: 18px;
+    border-radius: 15px;
+    color: aliceblue;
+    padding: 5px;
+    background-color: #3f3f3f;
+    overflow: auto;
+    float: right;
+}
+
+.blurb {
+    width: 228px;
+    border: 1px solid darkslategrey;
+    background-color: #639187;
+    color: #E5E1D3;
+    padding: 5px;
+    border-radius: 5px;
+    margin: 5px;
 }
 
 #splash {
@@ -26,7 +56,7 @@ body {
     color: aliceblue;
     width: 500px;
     height: 500px;
-    padding: none;
+    padding: 0;
     opacity: 20%;
     background-color: indigo;
     position: relative;
