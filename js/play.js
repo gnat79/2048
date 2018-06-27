@@ -160,18 +160,18 @@ function slideTile($tile, direction) {
             let distanceToEdge = 3 - col;
             if (distanceToEdge > 0) {
                 let shift;
-                let distanceToGo = 0;
+                let distanceToMove = 0;
                 for (shift = 1; shift <= distanceToEdge; shift++) {
                     let foundTileValue = board[row][col + shift];
                     if (foundTileValue === 0) {
-                        distanceToGo++;
+                        distanceToMove++;
                     } else if (foundTileValue === thisTileValue) {
-                        distanceToGo++;
+                        distanceToMove++;
                         break;
                     } else break;
                 }
-                if (distanceToGo > 0) {
-                    moveTileToPosition($tile, row, col, row, col + distanceToGo);
+                if (distanceToMove > 0) {
+                    moveTileToPosition($tile, row, col, row, col + distanceToMove);
                 }
             }
             return;
@@ -191,7 +191,7 @@ function slideTile($tile, direction) {
                     } else break;
                 }
                 if (distanceToMove > 0) {
-                    moveTileToPosition($tile, row, col, row, col + distanceToMove);
+                    moveTileToPosition($tile, row, col, row, col - distanceToMove);
                 }
             }
             return;
