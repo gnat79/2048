@@ -129,29 +129,6 @@ function slideAllTilesRight() {
     }
 }
 
-function slideTileRight($tile, row, col) {
-    let thisTileValue = board[row][col];
-    let colsToSlide = 3 - col;
-    if (colsToSlide > 0) {
-        let shift;
-        for (shift = 1; shift <= colsToSlide; shift++) {
-            let value = board[row][col + shift];
-            if (value === thisTileValue) {
-                let selector = "div.active.row" + row + ".col" + (col + shift);
-                let $oldTile = $(selector)[0];
-                moveTileToPosition($tile, row, col, row, col + shift);
-                board[row][col + shift] *= 2;
-                score += board[row][col + shift];
-                updateScoreDisplay();
-                updateTile($tile);
-                $oldTile.remove();
-            } else if (value !== undefined) {
-                break;
-            }
-        }
-    }
-}
-
 function getPosition($tile) {
     let thisTileClasses = $tile.attr("class");
     let row = (thisTileClasses.match(/row(\d)/))[1];
@@ -168,4 +145,47 @@ function moveTileToPosition($tile, currentRow, currentCol, newRow, newCol) {
 function updateScoreDisplay() {
     let scoreDiv = $("#score")[0];
     scoreDiv.innerHTML = "Score: " + score;
+}
+
+
+function slideTileRight($tile, row, col, direction) {
+    let thisTileValue = board[row][col];
+    switch (direction) {
+        case "right": {
+            let distanceToEdge = 3 - col;
+            if (distanceToEdge > 0) {
+                let shift;
+                let distanceToMove = 0;
+                for (shift = 1; shift <= distanceToEdge; shift++) {
+                    let foundTileValue = board[row][col + shift];
+                    if (foundTileValue === 0) {
+                        distanceToMove = shift;
+                    } else if (foundTileValue === thisTileValue) {
+                        distanceToMove = shift;
+                        break;
+                    } else break;
+                }
+                if (distanceToMove > 0) {
+                    let selector = "div.active.row" + row + ".col" + (col + shift);
+                    let $oldTile = $(selector)[0];
+                    moveTileToPosition($tile, row, col, row, col + shift);
+                    board[row][col + shift] *= 2;
+                    score += board[row][col + shift];
+                    updateScoreDisplay();
+                    updateTile($tile);
+                    $oldTile.remove();
+                }
+            }
+            return;
+        }
+        case "left": {
+            return;
+        }
+        case "up": {
+            return;
+        }
+        case "down": {
+            return;
+        }
+    }
 }
