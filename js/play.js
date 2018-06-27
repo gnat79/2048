@@ -85,11 +85,10 @@ function updateTile($tile) {
     if (value < 16385) {
         $tile.text(value);
         $tile.css("background-color", colors[value]);
-        $tile.css("color", textColor);
+        if (value !== 2) $tile.css("color", textColor);
     }
     return false;
 }
-
 
 function addTile(row, col) {
     let $newTile = $('<div class="tile"></div>');
@@ -106,24 +105,26 @@ function addTile(row, col) {
 
 function slideTiles(direction) {
     switch (direction) {
-        case "down": alert(direction); break;
-        case "up": alert(direction); break;
-        case "left": alert(direction); break;
+        case "down": break;
+        case "up": break;
+        case "left": {
+            for (let col = 1; col < 4; col++) {
+                for (let row = 0; row < 4; row++) {
+                    if (board[row][col] > 0) {
+                        let $tile = getTileAtPosition(row, col);
+                        slideTile($tile, direction);
+                    }
+                }
+            }
+        } break;
         case "right": {
-            slideAllTilesRight();
-            break;
-        }
-    }
-}
-
-function slideAllTilesRight() {
-    for (let col = 2; col > -1; col--) {
-        for (let row = 0; row < 4; row++) {
-            let selector = "div.active.row" + row + ".col" + col;
-            let tile = $(selector);
-            if (tile.length > 0) {
-                //alert("Found " + $tile.length + " tile with value " + $tile[0].innerHTML);
-                slideTileRight($(tile[0]), row, col);
+            for (let col = 2; col >= 0; col--) {
+                for (let row = 0; row < 4; row++) {
+                    if (board[row][col] > 0) {
+                        let $tile = getTileAtPosition(row, col);
+                        slideTile($tile, direction);
+                    }
+                }
             }
         }
     }
@@ -136,10 +137,14 @@ function getPosition($tile) {
     return [row, col];
 }
 
-function moveTileToPosition($tile, currentRow, currentCol, newRow, newCol) {
-    board[currentRow][currentCol] = 0;
-    $tile.removeClass("row" + currentRow + " col" + currentCol);
-    $tile.addClass("row" + newRow + " col" + newCol);
+function getTileAtPosition(row, col) {
+    let selector = "div.active.row" + row + ".col" + col;
+    return $($(selector)[0]);
+}
+
+function removeTileAtPosition(row, col) {
+    let $tile = getTileAtPosition(row, col);
+    $tile.remove();
 }
 
 function updateScoreDisplay() {
@@ -147,17 +152,37 @@ function updateScoreDisplay() {
     scoreDiv.innerHTML = "Score: " + score;
 }
 
-
-function slideTileRight($tile, row, col, direction) {
+function slideTile($tile, direction) {
+    let [row, col] = getPosition($tile);
     let thisTileValue = board[row][col];
     switch (direction) {
         case "right": {
             let distanceToEdge = 3 - col;
             if (distanceToEdge > 0) {
                 let shift;
-                let distanceToMove = 0;
+                let distanceToGo = 0;
                 for (shift = 1; shift <= distanceToEdge; shift++) {
                     let foundTileValue = board[row][col + shift];
+                    if (foundTileValue === 0) {
+                        distanceToGo++;
+                    } else if (foundTileValue === thisTileValue) {
+                        distanceToGo++;
+                        break;
+                    } else break;
+                }
+                if (distanceToGo > 0) {
+                    moveTileToPosition($tile, row, col, row, col + distanceToGo);
+                }
+            }
+            return;
+        }
+        case "left": {
+            let distanceToEdge = col;
+            if (distanceToEdge > 0) {
+                let shift;
+                let distanceToMove = 0;
+                for (shift = 1; shift <= distanceToEdge; shift++) {
+                    let foundTileValue = board[row][col - shift];
                     if (foundTileValue === 0) {
                         distanceToMove = shift;
                     } else if (foundTileValue === thisTileValue) {
@@ -166,19 +191,9 @@ function slideTileRight($tile, row, col, direction) {
                     } else break;
                 }
                 if (distanceToMove > 0) {
-                    let selector = "div.active.row" + row + ".col" + (col + shift);
-                    let $oldTile = $(selector)[0];
-                    moveTileToPosition($tile, row, col, row, col + shift);
-                    board[row][col + shift] *= 2;
-                    score += board[row][col + shift];
-                    updateScoreDisplay();
-                    updateTile($tile);
-                    $oldTile.remove();
+                    moveTileToPosition($tile, row, col, row, col + distanceToMove);
                 }
             }
-            return;
-        }
-        case "left": {
             return;
         }
         case "up": {
@@ -187,5 +202,24 @@ function slideTileRight($tile, row, col, direction) {
         case "down": {
             return;
         }
+    }
+}
+
+function moveTileToPosition($tile, currentRow, currentCol, newRow, newCol) {
+    if (currentCol !== newCol || currentRow !== newRow) {
+        let currentVal = board[currentRow][currentCol];
+        let newVal = board[newRow][newCol];
+        if (currentVal === newVal) {
+            let doubleVal = currentVal * 2;
+            board[newRow][newCol] = doubleVal;
+            score += doubleVal;
+            removeTileAtPosition(newRow, newCol);
+            updateScoreDisplay();
+            updateTile($tile);
+        } else board[newRow][newCol] = currentVal;
+        board[currentRow][currentCol] = 0;
+        $tile.removeClass("row" + currentRow + " col" + currentCol);
+        $tile.addClass("row" + newRow + " col" + newCol);
+        updateTile($tile);
     }
 }
