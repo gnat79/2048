@@ -1,3 +1,6 @@
+// New tiles are either 2 or 4, with this probability of being 2
+let probabilityOfRolling2 = .75;
+
 // The game board [row][col]
 let board = [];
 
@@ -25,6 +28,8 @@ let colors = {
     16384:  {"bgColor": "#FF6F59", "fgColor": darkColor},
 };
 
+
+// This function handles key presses and mouse clicks.
 $().ready(function () {
     // Initialize the board to empty.
     for (let j = 0; j < 4; j++) {
@@ -35,8 +40,8 @@ $().ready(function () {
         board.push(row);
     }
 
-    addRandomTiles();
-    addRandomTiles();
+    // Start the game with two random tiles.
+    startGame();
 
     // Add a tile where clicked, or else double the value of the clicked tile.
     $("#game_board").on('mousedown', 'div.tile', function () {
@@ -51,34 +56,44 @@ $().ready(function () {
         return false;
     });
 
+    // Restart the game.
+    $("#restart").mousedown(function(e) {
+        e.preventDefault();
+        resetBoard();
+        score = 0;
+        updateScoreDisplay();
+        startGame();
+        return false;
+    });
+
     // Handle arrow keys
     $(document).keydown(function(event) {
         let keyCode = event.which;
         switch (keyCode) {
             case 37: {
                 if (slideTiles("left")) {
-                    addRandomTiles();
+                    addRandomTile();
                 } else if (gameOver()) endGame();
                 event.preventDefault();
                 break;
             }
             case 38: {
                 if (slideTiles("up")) {
-                    addRandomTiles();
+                    addRandomTile();
                 } else if (gameOver()) endGame();
                 event.preventDefault();
                 break;
             }
             case 39: {
                 if (slideTiles("right")) {
-                    addRandomTiles();
+                    addRandomTile();
                 } else if (gameOver()) endGame();
                 event.preventDefault();
                 break;
             }
             case 40: {
                 if (slideTiles("down")) {
-                    addRandomTiles();
+                    addRandomTile();
                 } else if (gameOver()) endGame();
                 event.preventDefault();
                 break;
@@ -88,7 +103,6 @@ $().ready(function () {
         }
         return false;
     });
-
     return false;
 });
 
@@ -98,9 +112,8 @@ function updateTile($tile) {
     if (value < 16385) {
         $tile.text(value);
         $tile.css("background-color", colors[value]['bgColor']);
-        if (value !== 2) $tile.css("color", colors[value]['fgColor']);
+        $tile.css("color", colors[value]['fgColor']);
     }
-    return false;
 }
 
 function addTile(row, col, value) {
@@ -112,7 +125,6 @@ function addTile(row, col, value) {
     $newTile.css("background-color", colors[value]['bgColor']);
     $newTile.css("color", colors[value]['fgColor']);
     $("#game_board").append($newTile);
-    return false;
 }
 
 function slideTiles(direction) {
@@ -276,26 +288,34 @@ function slideTile($tile, direction) {
     }
 }
 
+// Move a tile to the specified cell.
 function moveTileToPosition($tile, currentRow, currentCol, newRow, newCol) {
+    let playerWon = false;
     if (currentCol !== newCol || currentRow !== newRow) {
         let currentVal = board[currentRow][currentCol];
         let newVal = board[newRow][newCol];
         if (currentVal === newVal) {
             let doubleVal = currentVal * 2;
+            if (doubleVal === 2048) playerWon = true;
             board[newRow][newCol] = doubleVal;
             score += doubleVal;
             removeTileAtPosition(newRow, newCol);
             updateScoreDisplay();
             updateTile($tile);
-        } else board[newRow][newCol] = currentVal;
+        } else {
+            board[newRow][newCol] = currentVal;
+        }
         board[currentRow][currentCol] = 0;
         $tile.removeClass("row" + currentRow + " col" + currentCol);
         $tile.addClass("row" + newRow + " col" + newCol);
         updateTile($tile);
     }
+    if (playerWon) alert("You won! Keep playing?");
 }
 
-function addRandomTiles() {
+// Add a single tile (randomly) to one of the empty cells. Value of new tile is either 2 or 4 with probability of
+// being 2 set by the constant probabilityOfRolling2
+function addRandomTile() {
     let row;
     let col;
     let emptyCell =  false;
@@ -306,7 +326,7 @@ function addRandomTiles() {
     }
     let value = 2;
     let prob = Math.random();
-    if (prob > .75) value = 4;
+    if (prob > probabilityOfRolling2) value = 4;
     addTile(row, col, value);
 }
 
@@ -315,6 +335,7 @@ function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
 
+// Play continues as long as there are no empty cells and no two adjacent cells are equal.
 function gameOver() {
     // Check for equal tiles in any column or row
     for (let i = 0; i < 4; i++) {
@@ -330,6 +351,23 @@ function gameOver() {
     return true;
 }
 
+// Eventually: add an opaque cover to the board with a "Play Again?" button.
 function endGame() {
     alert("Game is over");
+}
+
+// Adds random tiles to board.
+function startGame() {
+    addRandomTile();
+    addRandomTile();
+}
+
+// Remove all tiles from the board.
+function resetBoard() {
+    for (let row = 0; row < 4; row++) {
+        for (let col = 0; col < 4; col++) {
+            removeTileAtPosition(row, col);
+            board[row][col] = 0;
+        }
+    }
 }
