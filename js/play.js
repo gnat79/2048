@@ -41,7 +41,7 @@ $().ready(function () {
 
         } else {
             let [row, col] = getPosition($(this));
-            addTile(row, col);
+            addTile(row, col, Math.pow(2, getRandomInt(1,4)));
         }
         return false;
     });
@@ -51,22 +51,31 @@ $().ready(function () {
         let keyCode = event.which;
         switch (keyCode) {
             case 37: {
-                slideTiles("left");
+                if (slideTiles("left")) {
+                    addRandomTiles();
+                }
                 event.preventDefault();
                 break;
             }
             case 38: {
-                slideTiles("up");
+                if (slideTiles("up")) {
+                    addRandomTiles();
+                }
                 event.preventDefault();
                 break;
             }
             case 39: {
-                slideTiles("right");
+                if (slideTiles("right")) {
+                    addRandomTiles();
+                }
                 event.preventDefault();
                 break;
             }
             case 40: {
-                slideTiles("down");
+                if (slideTiles("down")) {
+                    addRandomTiles();
+                    alert("Moved DOWN");
+                }
                 event.preventDefault();
                 break;
             }
@@ -90,11 +99,10 @@ function updateTile($tile) {
     return false;
 }
 
-function addTile(row, col) {
+function addTile(row, col, value) {
     let $newTile = $('<div class="tile"></div>');
     $newTile.addClass("row" + row + " col" + col);
     $newTile.toggleClass("active holder");
-    let value = 2;
     board[row][col] = value;
     $newTile.text(board[row][col]);
     $newTile.css("background-color", colors[value]);
@@ -104,13 +112,14 @@ function addTile(row, col) {
 }
 
 function slideTiles(direction) {
+    let movedTiles = false;
     switch (direction) {
         case "down": {
             for (let row = 1; row >= 0; row++) {
                 for (let col = 0; col < 4; col++) {
                     if (board[row][col] > 0) {
                         let $tile = getTileAtPosition(row, col);
-                        slideTile($tile, direction);
+                        movedTiles = (slideTile($tile, direction) || movedTiles);
                     }
                 }
             }
@@ -120,7 +129,7 @@ function slideTiles(direction) {
                 for (let col = 0; col < 4; col++) {
                     if (board[row][col] > 0) {
                         let $tile = getTileAtPosition(row, col);
-                        slideTile($tile, direction);
+                        movedTiles = (slideTile($tile, direction) || movedTiles);
                     }
                 }
             }
@@ -130,7 +139,7 @@ function slideTiles(direction) {
                 for (let row = 0; row < 4; row++) {
                     if (board[row][col] > 0) {
                         let $tile = getTileAtPosition(row, col);
-                        slideTile($tile, direction);
+                        movedTiles = (slideTile($tile, direction) || movedTiles);
                     }
                 }
             }
@@ -140,12 +149,13 @@ function slideTiles(direction) {
                 for (let row = 0; row < 4; row++) {
                     if (board[row][col] > 0) {
                         let $tile = getTileAtPosition(row, col);
-                        slideTile($tile, direction);
+                        movedTiles = (slideTile($tile, direction) || movedTiles);
                     }
                 }
             }
         }
     }
+    return movedTiles;
 }
 
 function getPosition($tile) {
@@ -171,6 +181,7 @@ function updateScoreDisplay() {
 }
 
 function slideTile($tile, direction) {
+    let movedTile = false;
     let [row, col] = getPosition($tile);
     let thisTileValue = board[row][col];
     switch (direction) {
@@ -190,9 +201,10 @@ function slideTile($tile, direction) {
                 }
                 if (distanceToMove > 0) {
                     moveTileToPosition($tile, row, col, row, col + distanceToMove);
+                    movedTile = true;
                 }
             }
-            return;
+            return movedTile;
         }
         case "left": {
             let distanceToEdge = col;
@@ -210,9 +222,10 @@ function slideTile($tile, direction) {
                 }
                 if (distanceToMove > 0) {
                     moveTileToPosition($tile, row, col, row, col - distanceToMove);
+                    movedTile = true;
                 }
             }
-            return;
+            return movedTile;
         }
         case "up": {
             let distanceToTop = 3 - row;
@@ -230,9 +243,10 @@ function slideTile($tile, direction) {
                 }
                 if (distanceToMove > 0) {
                     moveTileToPosition($tile, row, col, row + distanceToMove, col);
+                    movedTile = true;
                 }
             }
-            return;
+            return movedTile;
         }
         case "down": {
             let distanceToBottom = row;
@@ -250,9 +264,10 @@ function slideTile($tile, direction) {
                 }
                 if (distanceToMove > 0) {
                     moveTileToPosition($tile, row, col, row - distanceToMove, col);
+                    movedTile = true;
                 }
             }
-            return;
+            return movedTile;
         }
     }
 }
@@ -274,4 +289,26 @@ function moveTileToPosition($tile, currentRow, currentCol, newRow, newCol) {
         $tile.addClass("row" + newRow + " col" + newCol);
         updateTile($tile);
     }
+}
+
+function addRandomTiles() {
+    let row;
+    let col;
+    let emptyCell =  false;
+    while (!emptyCell) {
+        row = getRandomInt(0,4);
+        col = getRandomInt(0,4);
+        emptyCell = board[row][col] > 0;
+    }
+    let value = 2;
+    let prob = Math.random();
+    if (prob > .85) value = 4;
+    addTile(row, col, value);
+}
+
+// The maximum is exclusive and the minimum is inclusive
+function getRandomInt(min, max) {
+    min = Math.ceil(min);
+    max = Math.floor(max);
+    return Math.floor(Math.random() * (max - min)) + min;
 }
