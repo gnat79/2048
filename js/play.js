@@ -306,9 +306,7 @@ function addRandomTiles() {
     addTile(row, col, value);
 }
 
-// The maximum is exclusive and the minimum is inclusive
+// The maximum is exclusive and the minimum is inclusive. Stolen (and then edited) from somewhere on the internets.
 function getRandomInt(min, max) {
-    min = Math.ceil(min);
-    max = Math.floor(max);
     return Math.floor(Math.random() * (max - min)) + min;
 }
