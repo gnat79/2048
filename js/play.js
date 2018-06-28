@@ -35,6 +35,9 @@ $().ready(function () {
         board.push(row);
     }
 
+    addRandomTiles();
+    addRandomTiles();
+
     // Add a tile where clicked, or else double the value of the clicked tile.
     $("#game_board").on('mousedown', 'div.tile', function () {
         if($(this).hasClass("active")) {
@@ -55,28 +58,28 @@ $().ready(function () {
             case 37: {
                 if (slideTiles("left")) {
                     addRandomTiles();
-                }
+                } else if (gameOver()) endGame();
                 event.preventDefault();
                 break;
             }
             case 38: {
                 if (slideTiles("up")) {
                     addRandomTiles();
-                }
+                } else if (gameOver()) endGame();
                 event.preventDefault();
                 break;
             }
             case 39: {
                 if (slideTiles("right")) {
                     addRandomTiles();
-                }
+                } else if (gameOver()) endGame();
                 event.preventDefault();
                 break;
             }
             case 40: {
                 if (slideTiles("down")) {
                     addRandomTiles();
-                }
+                } else if (gameOver()) endGame();
                 event.preventDefault();
                 break;
             }
@@ -303,8 +306,7 @@ function addRandomTiles() {
     }
     let value = 2;
     let prob = Math.random();
-    if (prob > .85) value = 4;
-    //alert("Adding a tile at " + row + ", " + col + " with value " + value);
+    if (prob > .75) value = 4;
     addTile(row, col, value);
 }
 
@@ -314,19 +316,20 @@ function getRandomInt(min, max) {
 }
 
 function gameOver() {
-    let cellsToCheck = [[0,0], [0,2], [1,1], [1,3], [2,0], [2,2], [3,1], [3,3]];
-    for (let cell in cellsToCheck) {
-        let cellValue = board[cell[0]][cell[1]];
-        if (cellValue = 0) return false;
-        else {
-            return true;
+    // Check for equal tiles in any column or row
+    for (let i = 0; i < 4; i++) {
+        for (let j = 0; j < 3; j++) {
+            if (   board[i][j] === 0
+                || board[j][i] === 0
+                || board[i][j] === board[i][j + 1]
+                || board[j][i] === board[j + 1][i]
+            ) return false;
         }
+        if (board[i][3] === 0 || board[3][i] === 0) return false;
     }
-    return false;
+    return true;
 }
 
-//Mock Board
-// o 0 o 0
-// 0 o 0 o
-// o 0 o 0
-// 0 o 0 o
+function endGame() {
+    alert("Game is over");
+}
