@@ -3,23 +3,26 @@ let board = [];
 
 let score = 0;
 
-// Background, foreground
-let textColor = "#E5E1D3";
+// Text colors
+let lightColor = "#E5E1D3";
+let darkColor = "#3D3C38";
+
+// Tile colors
 let colors = {
-    2: "#CAD2C5",
-    4: "#84A98C",
-    8: "#52796F",
-    16: "#354F52",
-    32: "#2F3E46",
-    64: "#5171A5",
-    128:"#36558F",
-    256: "#4C2C69",
-    512: "#42253B",
-    1024: "#832232",
-    2048: "#963D5A",
-    4096: "#C16E70",
-    8192: "#9E5E31",
-    16384: "#FF6F59",
+    2:      {"bgColor": "#CAD2C5", "fgColor": darkColor},
+    4:      {"bgColor": "#84A98C", "fgColor": darkColor},
+    8:      {"bgColor": "#52796F", "fgColor": lightColor},
+    16:     {"bgColor": "#354F52", "fgColor": lightColor},
+    32:     {"bgColor": "#2F3E46", "fgColor": lightColor},
+    64:     {"bgColor": "#5171A5", "fgColor": lightColor},
+    128:    {"bgColor": "#36558F", "fgColor": lightColor},
+    256:    {"bgColor": "#4C2C69", "fgColor": lightColor},
+    512:    {"bgColor": "#42253B", "fgColor": lightColor},
+    1024:   {"bgColor": "#832232", "fgColor": lightColor},
+    2048:   {"bgColor": "#963D5A", "fgColor": lightColor},
+    4096:   {"bgColor": "#C16E70", "fgColor": lightColor},
+    8192:   {"bgColor": "#9E5E31", "fgColor": darkColor},
+    16384:  {"bgColor": "#FF6F59", "fgColor": darkColor},
 };
 
 $().ready(function () {
@@ -38,7 +41,6 @@ $().ready(function () {
             let [row, col] = getPosition($(this));
             board[row][col] *= 2;
             updateTile($(this));
-
         } else {
             let [row, col] = getPosition($(this));
             addTile(row, col, Math.pow(2, getRandomInt(1,4)));
@@ -74,7 +76,6 @@ $().ready(function () {
             case 40: {
                 if (slideTiles("down")) {
                     addRandomTiles();
-                    alert("Moved DOWN");
                 }
                 event.preventDefault();
                 break;
@@ -93,8 +94,8 @@ function updateTile($tile) {
     let value = board[row][col];
     if (value < 16385) {
         $tile.text(value);
-        $tile.css("background-color", colors[value]);
-        if (value !== 2) $tile.css("color", textColor);
+        $tile.css("background-color", colors[value]['bgColor']);
+        if (value !== 2) $tile.css("color", colors[value]['fgColor']);
     }
     return false;
 }
@@ -105,8 +106,8 @@ function addTile(row, col, value) {
     $newTile.toggleClass("active holder");
     board[row][col] = value;
     $newTile.text(board[row][col]);
-    $newTile.css("background-color", colors[value]);
-    $newTile.css("color", "#3D3C38");
+    $newTile.css("background-color", colors[value]['bgColor']);
+    $newTile.css("color", colors[value]['fgColor']);
     $("#game_board").append($newTile);
     return false;
 }
@@ -115,7 +116,7 @@ function slideTiles(direction) {
     let movedTiles = false;
     switch (direction) {
         case "down": {
-            for (let row = 1; row >= 0; row++) {
+            for (let row = 1; row < 4; row++) {
                 for (let col = 0; col < 4; col++) {
                     if (board[row][col] > 0) {
                         let $tile = getTileAtPosition(row, col);
@@ -298,11 +299,12 @@ function addRandomTiles() {
     while (!emptyCell) {
         row = getRandomInt(0,4);
         col = getRandomInt(0,4);
-        emptyCell = board[row][col] > 0;
+        emptyCell = (board[row][col] === 0);
     }
     let value = 2;
     let prob = Math.random();
     if (prob > .85) value = 4;
+    //alert("Adding a tile at " + row + ", " + col + " with value " + value);
     addTile(row, col, value);
 }
 
@@ -310,3 +312,21 @@ function addRandomTiles() {
 function getRandomInt(min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
 }
+
+function gameOver() {
+    let cellsToCheck = [[0,0], [0,2], [1,1], [1,3], [2,0], [2,2], [3,1], [3,3]];
+    for (let cell in cellsToCheck) {
+        let cellValue = board[cell[0]][cell[1]];
+        if (cellValue = 0) return false;
+        else {
+            return true;
+        }
+    }
+    return false;
+}
+
+//Mock Board
+// o 0 o 0
+// 0 o 0 o
+// o 0 o 0
+// 0 o 0 o
