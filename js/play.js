@@ -134,7 +134,7 @@ function getPosition($tile) {
     let thisTileClasses = $tile.attr("class");
     let row = (thisTileClasses.match(/row(\d)/))[1];
     let col = (thisTileClasses.match(/col(\d)/))[1];
-    return [row, col];
+    return [parseInt(row), parseInt(col)];
 }
 
 function getTileAtPosition(row, col) {
@@ -164,9 +164,9 @@ function slideTile($tile, direction) {
                 for (shift = 1; shift <= distanceToEdge; shift++) {
                     let foundTileValue = board[row][col + shift];
                     if (foundTileValue === 0) {
-                        distanceToMove++;
+                        distanceToMove = shift;
                     } else if (foundTileValue === thisTileValue) {
-                        distanceToMove++;
+                        distanceToMove = shift;
                         break;
                     } else break;
                 }
