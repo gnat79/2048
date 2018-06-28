@@ -105,8 +105,26 @@ function addTile(row, col) {
 
 function slideTiles(direction) {
     switch (direction) {
-        case "down": break;
-        case "up": break;
+        case "down": {
+            for (let row = 1; row >= 0; row++) {
+                for (let col = 0; col < 4; col++) {
+                    if (board[row][col] > 0) {
+                        let $tile = getTileAtPosition(row, col);
+                        slideTile($tile, direction);
+                    }
+                }
+            }
+        } break;
+        case "up": {
+            for (let row = 2; row >= 0; row--) {
+                for (let col = 0; col < 4; col++) {
+                    if (board[row][col] > 0) {
+                        let $tile = getTileAtPosition(row, col);
+                        slideTile($tile, direction);
+                    }
+                }
+            }
+        } break;
         case "left": {
             for (let col = 1; col < 4; col++) {
                 for (let row = 0; row < 4; row++) {
@@ -197,9 +215,43 @@ function slideTile($tile, direction) {
             return;
         }
         case "up": {
+            let distanceToTop = 3 - row;
+            if (distanceToTop > 0) {
+                let shift;
+                let distanceToMove = 0;
+                for (shift = 1; shift <= distanceToTop; shift++) {
+                    let foundTileValue = board[row + shift][col];
+                    if (foundTileValue === 0) {
+                        distanceToMove = shift;
+                    } else if (foundTileValue === thisTileValue) {
+                        distanceToMove = shift;
+                        break;
+                    } else break;
+                }
+                if (distanceToMove > 0) {
+                    moveTileToPosition($tile, row, col, row + distanceToMove, col);
+                }
+            }
             return;
         }
         case "down": {
+            let distanceToBottom = row;
+            if (distanceToBottom > 0) {
+                let shift;
+                let distanceToMove = 0;
+                for (shift = 1; shift <= distanceToBottom; shift++) {
+                    let foundTileValue = board[row - shift][col];
+                    if (foundTileValue === 0) {
+                        distanceToMove = shift;
+                    } else if (foundTileValue === thisTileValue) {
+                        distanceToMove = shift;
+                        break;
+                    } else break;
+                }
+                if (distanceToMove > 0) {
+                    moveTileToPosition($tile, row, col, row - distanceToMove, col);
+                }
+            }
             return;
         }
     }
