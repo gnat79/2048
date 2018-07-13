@@ -1,5 +1,5 @@
 // New tiles are either 2 or 4, with this probability of being 2
-let probabilityOfRolling2 = .75;
+let probabilityOfRolling2 = .9;
 
 // The game board [row][col]
 let board = [];
