@@ -194,6 +194,8 @@ function removeTileAtPosition(row, col) {
 function updateScoreDisplay() {
     let scoreDiv = $("#score")[0];
     scoreDiv.innerHTML = "Score: " + score;
+    setBestScore(score);
+    $("#best")[0].innerHTML = "Best: " + Cookies.get('highScore');
 }
 
 function slideTile($tile, direction) {
@@ -358,6 +360,7 @@ function endGame() {
 
 // Adds random tiles to board.
 function startGame() {
+    updateScoreDisplay();
     addRandomTile();
     addRandomTile();
 }
@@ -369,5 +372,16 @@ function resetBoard() {
             removeTileAtPosition(row, col);
             board[row][col] = 0;
         }
+    }
+}
+
+// Set "best" score as a cookie
+function setBestScore(score) {
+    let currentBest = Cookies.get('highScore');
+    if (currentBest === undefined) {
+        Cookies.set('highScore', score);
+    }
+    else if (currentBest < score) {
+        Cookies.set('highScore', score);
     }
 }
