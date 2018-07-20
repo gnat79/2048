@@ -2,7 +2,7 @@
 let probabilityOfRolling2 = .9;
 
 // The game board [row][col]
-let board = [];
+let board = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
 
 let score = 0;
 
@@ -12,20 +12,20 @@ let darkColor = "#3D3C38";
 
 // Tile colors
 let colors = {
-    2:      {"bgColor": "#CAD2C5", "fgColor": darkColor},
-    4:      {"bgColor": "#84A98C", "fgColor": darkColor},
-    8:      {"bgColor": "#52796F", "fgColor": lightColor},
-    16:     {"bgColor": "#354F52", "fgColor": lightColor},
-    32:     {"bgColor": "#2F3E46", "fgColor": lightColor},
-    64:     {"bgColor": "#5171A5", "fgColor": lightColor},
-    128:    {"bgColor": "#36558F", "fgColor": lightColor},
-    256:    {"bgColor": "#4C2C69", "fgColor": lightColor},
-    512:    {"bgColor": "#42253B", "fgColor": lightColor},
-    1024:   {"bgColor": "#832232", "fgColor": lightColor},
-    2048:   {"bgColor": "#963D5A", "fgColor": lightColor},
-    4096:   {"bgColor": "#C16E70", "fgColor": lightColor},
-    8192:   {"bgColor": "#9E5E31", "fgColor": darkColor},
-    16384:  {"bgColor": "#FF6F59", "fgColor": darkColor},
+    2: {"bgColor": "#CAD2C5", "fgColor": darkColor},
+    4: {"bgColor": "#84A98C", "fgColor": darkColor},
+    8: {"bgColor": "#52796F", "fgColor": lightColor},
+    16: {"bgColor": "#354F52", "fgColor": lightColor},
+    32: {"bgColor": "#2F3E46", "fgColor": lightColor},
+    64: {"bgColor": "#5171A5", "fgColor": lightColor},
+    128: {"bgColor": "#36558F", "fgColor": lightColor},
+    256: {"bgColor": "#4C2C69", "fgColor": lightColor},
+    512: {"bgColor": "#42253B", "fgColor": lightColor},
+    1024: {"bgColor": "#832232", "fgColor": lightColor},
+    2048: {"bgColor": "#963D5A", "fgColor": lightColor},
+    4096: {"bgColor": "#C16E70", "fgColor": lightColor},
+    8192: {"bgColor": "#9E5E31", "fgColor": darkColor},
+    16384: {"bgColor": "#FF6F59", "fgColor": darkColor},
 };
 
 
@@ -45,19 +45,19 @@ $().ready(function () {
 
     // Add a tile where clicked, or else double the value of the clicked tile.
     $("#game_board").on('mousedown', 'div.tile', function () {
-        if($(this).hasClass("active")) {
+        if ($(this).hasClass("active")) {
             let [row, col] = getPosition($(this));
             board[row][col] *= 2;
             updateTile($(this));
         } else {
             let [row, col] = getPosition($(this));
-            addTile(row, col, Math.pow(2, getRandomInt(1,4)));
+            addTile(row, col, Math.pow(2, getRandomInt(1, 4)));
         }
         return false;
     });
 
     // Restart the game.
-    $("#restart").mousedown(function(e) {
+    $("#restart").mousedown(function (e) {
         e.preventDefault();
         resetBoard();
         score = 0;
@@ -67,7 +67,7 @@ $().ready(function () {
     });
 
     // Handle arrow keys
-    $(document).keydown(function(event) {
+    $(document).keydown(function (event) {
         let keyCode = event.which;
         switch (keyCode) {
             case 37: {
@@ -139,7 +139,8 @@ function slideTiles(direction) {
                     }
                 }
             }
-        } break;
+        }
+            break;
         case "up": {
             for (let row = 2; row >= 0; row--) {
                 for (let col = 0; col < 4; col++) {
@@ -149,7 +150,8 @@ function slideTiles(direction) {
                     }
                 }
             }
-        } break;
+        }
+            break;
         case "left": {
             for (let col = 1; col < 4; col++) {
                 for (let row = 0; row < 4; row++) {
@@ -159,7 +161,8 @@ function slideTiles(direction) {
                     }
                 }
             }
-        } break;
+        }
+            break;
         case "right": {
             for (let col = 2; col >= 0; col--) {
                 for (let row = 0; row < 4; row++) {
@@ -320,10 +323,10 @@ function moveTileToPosition($tile, currentRow, currentCol, newRow, newCol) {
 function addRandomTile() {
     let row;
     let col;
-    let emptyCell =  false;
+    let emptyCell = false;
     while (!emptyCell) {
-        row = getRandomInt(0,4);
-        col = getRandomInt(0,4);
+        row = getRandomInt(0, 4);
+        col = getRandomInt(0, 4);
         emptyCell = (board[row][col] === 0);
     }
     let value = 2;
@@ -342,7 +345,7 @@ function gameOver() {
     // Check for equal tiles in any column or row
     for (let i = 0; i < 4; i++) {
         for (let j = 0; j < 3; j++) {
-            if (   board[i][j] === 0
+            if (board[i][j] === 0
                 || board[j][i] === 0
                 || board[i][j] === board[i][j + 1]
                 || board[j][i] === board[j + 1][i]
