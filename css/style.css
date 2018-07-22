@@ -12,7 +12,6 @@ body {
 #game_board {
     border: 2px solid #393938;
     font-family: Menlo, Monaco, monospace;
-    font-size: 28px;
     border-radius: 15px;
     color: aliceblue;
     width: 440px;
@@ -38,6 +37,19 @@ body {
     float: right;
 }
 
+#top-info {
+    text-align: center;
+    font-size: 24px;
+    border: 2px solid #393938;
+    font-family: Menlo, Monaco, monospace;
+    border-radius: 15px;
+    color: #E5E1D3;
+    width: 740px;
+    padding: 15px;
+    margin-bottom: 30px;
+    background-color: slategrey;
+}
+
 .blurb {
     width: 198px;
     border: 1px solid darkslategrey;
@@ -46,6 +58,22 @@ body {
     padding: 10px 20px 10px 20px;
     border-radius: 5px;
     margin: 5px;
+}
+
+.instructions {
+    width: 218px;
+    border: 1px solid darkslategrey;
+    background-color: #828282;
+    color: #E5E1D3;
+    padding: 10px 10px 10px 10px;
+    border-radius: 5px;
+    margin: 5px;
+    font-size: 14px;
+}
+
+#credits {
+    background-color: #828282;
+    font-size: 12px;
 }
 
 #splash {

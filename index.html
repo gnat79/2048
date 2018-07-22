@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>2048 Game by gnat79</title>
+    <title>2048 Game Clone by gnat79</title>
     <link rel="stylesheet" href="css/style.css">
     <script src="js/jquery-3.3.1.js"></script>
     <script src="js/js.cookie.js"></script>
@@ -10,6 +10,9 @@
 </head>
 <body>
 <div id="wrapper">
+    <div id="top-info">
+        Join the numbers and get to the 2048 tile!
+    </div>
     <div id="game_board" class="game_board">
         <!--<div id="splash">-->
         <!--<button id="start">Start</button>-->
@@ -35,6 +38,14 @@
         <div id="score" class="blurb">Score: 0</div>
         <div id="best" class="blurb">Best: 0</div>
         <div id="restart" class="blurb">Restart Game</div>
+        <div class="instructions">
+            HOW TO PLAY: Use your arrow keys to move the tiles. When two tiles with the same number touch, they merge
+            into one!
+        </div>
+        <br /><br /><br /><br /><br />
+        <div class="blurb" id="credits">
+            Play the original 2048 game <a target="_blank" href="https://gabrielecirulli.github.io/2048/">here</a>.
+        </div>
     </div>
 </div>
 </body>
