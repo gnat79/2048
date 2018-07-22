@@ -330,11 +330,36 @@ function endGame() {
     alert("Game is over");
 }
 
+// Set "best" score as a cookie
+function setBestScore(score) {
+    let currentBest = Cookies.get('highScore');
+    if (currentBest === undefined) {
+        Cookies.set('highScore', score);
+    }
+    else if (currentBest < score) {
+        Cookies.set('highScore', score);
+    }
+}
+
 // Adds random tiles to board.
 function startGame() {
     updateScoreDisplay();
     addRandomTile();
     addRandomTile();
+}
+
+// Return the specified row of the board as an array.
+function getRow(row) {
+    return board[row];
+}
+
+// Return the specified column of the board as an array.
+function getColumn(col) {
+    let column = [];
+    for (let i = 0; i < 4; i++) {
+        column[i] = board[i][col];
+    }
+    return column;
 }
 
 // Remove all tiles from the board.
@@ -344,16 +369,5 @@ function resetBoard() {
             removeTileAtPosition(row, col);
             board[row][col] = 0;
         }
-    }
-}
-
-// Set "best" score as a cookie
-function setBestScore(score) {
-    let currentBest = Cookies.get('highScore');
-    if (currentBest === undefined) {
-        Cookies.set('highScore', score);
-    }
-    else if (currentBest < score) {
-        Cookies.set('highScore', score);
     }
 }
