@@ -72,28 +72,6 @@ $().ready(function () {
     return false;
 });
 
-function updateTile($tile) {
-    let [row, col] = getPosition($tile);
-    let value = board[row][col];
-    if (value < 16385) {
-        $tile.text(value);
-        $tile.css("background-color", tileProperties[value]['bgColor']);
-        $tile.css("color", tileProperties[value]['fgColor']);
-        $tile.css("font-size", tileProperties[value]['fontSize']);
-    }
-}
-
-function addTile(row, col, value) {
-    let $newTile = $('<div class="tile"></div>');
-    $newTile.addClass("row" + row + " col" + col);
-    $newTile.toggleClass("active holder");
-    board[row][col] = value;
-    $newTile.text(board[row][col]);
-    $newTile.css("background-color", tileProperties[value]['bgColor']);
-    $newTile.css("color", tileProperties[value]['fgColor']);
-    $newTile.css("font-size", tileProperties[value]['fontSize']);
-    $("#game_board").append($newTile);
-}
 
 function slideTiles(direction) {
     let movedTiles = false;
@@ -143,6 +121,29 @@ function slideTiles(direction) {
         }
     }
     return movedTiles;
+}
+
+function updateTile($tile) {
+    let [row, col] = getPosition($tile);
+    let value = board[row][col];
+    if (value < 16385) {
+        $tile.text(value);
+        $tile.css("background-color", tileProperties[value]['bgColor']);
+        $tile.css("color", tileProperties[value]['fgColor']);
+        $tile.css("font-size", tileProperties[value]['fontSize']);
+    }
+}
+
+function addTile(row, col, value) {
+    let $newTile = $('<div class="tile"></div>');
+    $newTile.addClass("row" + row + " col" + col);
+    $newTile.toggleClass("active holder");
+    board[row][col] = value;
+    $newTile.text(board[row][col]);
+    $newTile.css("background-color", tileProperties[value]['bgColor']);
+    $newTile.css("color", tileProperties[value]['fgColor']);
+    $newTile.css("font-size", tileProperties[value]['fontSize']);
+    $("#game_board").append($newTile);
 }
 
 function getPosition($tile) {
