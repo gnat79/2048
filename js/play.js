@@ -1,44 +1,34 @@
 // New tiles are either 2 or 4, with this probability of being 2
 let probabilityOfRolling2 = .9;
 
-// The game board [row][col]
+// The initial game board [row][col]
 let board = [[0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0], [0, 0, 0, 0]];
 
 let score = 0;
 
-// Text colors
+// Tile properties
 let lightColor = "#E5E1D3";
 let darkColor = "#3D3C38";
-
-// Tile colors
-let colors = {
-    2: {"bgColor": "#CAD2C5", "fgColor": darkColor},
-    4: {"bgColor": "#84A98C", "fgColor": darkColor},
-    8: {"bgColor": "#52796F", "fgColor": lightColor},
-    16: {"bgColor": "#354F52", "fgColor": lightColor},
-    32: {"bgColor": "#2F3E46", "fgColor": lightColor},
-    64: {"bgColor": "#5171A5", "fgColor": lightColor},
-    128: {"bgColor": "#36558F", "fgColor": lightColor},
-    256: {"bgColor": "#4C2C69", "fgColor": lightColor},
-    512: {"bgColor": "#42253B", "fgColor": lightColor},
-    1024: {"bgColor": "#832232", "fgColor": lightColor},
-    2048: {"bgColor": "#963D5A", "fgColor": lightColor},
-    4096: {"bgColor": "#C16E70", "fgColor": lightColor},
-    8192: {"bgColor": "#9E5E31", "fgColor": darkColor},
-    16384: {"bgColor": "#FF6F59", "fgColor": darkColor},
+let tileProperties = {
+    2: {"bgColor": "#CAD2C5", "fgColor": darkColor, "fontSize": "48px"},
+    4: {"bgColor": "#84A98C", "fgColor": darkColor, "fontSize": "48px"},
+    8: {"bgColor": "#52796F", "fgColor": lightColor, "fontSize": "48px"},
+    16: {"bgColor": "#354F52", "fgColor": lightColor, "fontSize": "48px"},
+    32: {"bgColor": "#2F3E46", "fgColor": lightColor, "fontSize": "48px"},
+    64: {"bgColor": "#5171A5", "fgColor": lightColor, "fontSize": "48px"},
+    128: {"bgColor": "#36558F", "fgColor": lightColor, "fontSize": "40px"},
+    256: {"bgColor": "#4C2C69", "fgColor": lightColor, "fontSize": "40px"},
+    512: {"bgColor": "#42253B", "fgColor": lightColor, "fontSize": "40px"},
+    1024: {"bgColor": "#832232", "fgColor": lightColor, "fontSize": "32px"},
+    2048: {"bgColor": "#963D5A", "fgColor": lightColor, "fontSize": "32px"},
+    4096: {"bgColor": "#C16E70", "fgColor": lightColor, "fontSize": "32px"},
+    8192: {"bgColor": "#9E5E31", "fgColor": darkColor, "fontSize": "32px"},
+    16384: {"bgColor": "#FF6F59", "fgColor": darkColor, "fontSize": "24px"},
 };
 
 
 // This function handles key presses and mouse clicks.
 $().ready(function () {
-    // Initialize the board to empty.
-    for (let j = 0; j < 4; j++) {
-        let row = [];
-        for (let i = 0; i < 4; i++) {
-            row.push(0);
-        }
-        board.push(row);
-    }
 
     // Start the game with two random tiles.
     startGame();
@@ -51,7 +41,7 @@ $().ready(function () {
             updateTile($(this));
         } else {
             let [row, col] = getPosition($(this));
-            addTile(row, col, Math.pow(2, getRandomInt(1, 4)));
+            addTile(row, col, 2);
         }
         return false;
     });
@@ -68,38 +58,14 @@ $().ready(function () {
 
     // Handle arrow keys
     $(document).keydown(function (event) {
-        let keyCode = event.which;
-        switch (keyCode) {
-            case 37: {
-                if (slideTiles("left")) {
-                    addRandomTile();
-                } else if (gameOver()) endGame();
-                event.preventDefault();
-                break;
-            }
-            case 38: {
-                if (slideTiles("up")) {
-                    addRandomTile();
-                } else if (gameOver()) endGame();
-                event.preventDefault();
-                break;
-            }
-            case 39: {
-                if (slideTiles("right")) {
-                    addRandomTile();
-                } else if (gameOver()) endGame();
-                event.preventDefault();
-                break;
-            }
-            case 40: {
-                if (slideTiles("down")) {
-                    addRandomTile();
-                } else if (gameOver()) endGame();
-                event.preventDefault();
-                break;
-            }
-            default:
-                return;
+        let key = event.which;
+        let key_codes = {37: "left", 38: "up", 39: "right", 40: "down"};
+
+        if (key_codes[key] !== undefined) {
+            if (slideTiles(key_codes[key])) {
+                addRandomTile();
+            } else if (gameOver()) endGame();
+            event.preventDefault();
         }
         return false;
     });
@@ -111,8 +77,9 @@ function updateTile($tile) {
     let value = board[row][col];
     if (value < 16385) {
         $tile.text(value);
-        $tile.css("background-color", colors[value]['bgColor']);
-        $tile.css("color", colors[value]['fgColor']);
+        $tile.css("background-color", tileProperties[value]['bgColor']);
+        $tile.css("color", tileProperties[value]['fgColor']);
+        $tile.css("font-size", tileProperties[value]['fontSize']);
     }
 }
 
@@ -122,8 +89,9 @@ function addTile(row, col, value) {
     $newTile.toggleClass("active holder");
     board[row][col] = value;
     $newTile.text(board[row][col]);
-    $newTile.css("background-color", colors[value]['bgColor']);
-    $newTile.css("color", colors[value]['fgColor']);
+    $newTile.css("background-color", tileProperties[value]['bgColor']);
+    $newTile.css("color", tileProperties[value]['fgColor']);
+    $newTile.css("font-size", tileProperties[value]['fontSize']);
     $("#game_board").append($newTile);
 }
 
