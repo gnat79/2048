@@ -67,10 +67,34 @@ $().ready(function () {
             } else if (gameOver()) endGame();
             event.preventDefault();
         }
-        return false;
     });
     return false;
 });
+
+
+function newSlide(direction) {
+    let movedTiles = false;
+    switch (direction) {
+        case "down": {
+            for (let col = 0; col < 4; col++) {
+                slideColumn(getColumn(col));
+            }
+        }
+            break;
+        case "up": {
+            ;
+        }
+            break;
+        case "left": {
+            ;
+        }
+            break;
+        case "right": {
+            ;
+        }
+    }
+    return movedTiles;
+}
 
 
 function slideTiles(direction) {
@@ -348,18 +372,28 @@ function startGame() {
     addRandomTile();
 }
 
-// Return the specified row of the board as an array.
+// Get and put for a row in the board.
 function getRow(row) {
     return board[row];
 }
 
-// Return the specified column of the board as an array.
+function putRow(row, array) {
+    board[row] = array;
+}
+
+// Get and put for a column in the board.
 function getColumn(col) {
     let column = [];
     for (let i = 0; i < 4; i++) {
         column[i] = board[i][col];
     }
     return column;
+}
+
+function putColumn(col, array) {
+    for (let i = 0; i < 4; i++) {
+        board[i][col] = array[i];
+    }
 }
 
 // Remove all tiles from the board.

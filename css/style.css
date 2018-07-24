@@ -2,6 +2,22 @@ body {
     background-color: black;
     margin: auto;
     padding: 50px;
+    font-size: 15px;
+}
+
+a:link, a:visited, a:hover {
+    color: #639187;
+    text-underline: none;
+}
+
+h1 {
+    font-size: 36px;
+    color: black;
+    /*border: 1px solid silver;*/
+    border-radius: 5px;
+    margin: 5px;
+    /*background-color: #aaaaaa;*/
+    padding: 5px;
 }
 
 #wrapper {
@@ -11,12 +27,13 @@ body {
 
 #game_board {
     border: 2px solid #393938;
-    font-family: Menlo, Monaco, monospace;
+    font-family: "Clear Sans", "Helvetica Neue", Arial, sans-serif;
     border-radius: 15px;
     color: aliceblue;
     width: 440px;
     height: 440px;
     padding: 5px;
+    font-weight: bolder;
     background-color: slategrey;
     overflow: auto;
     float: left;
@@ -39,7 +56,7 @@ body {
 
 #top-info {
     text-align: center;
-    font-size: 24px;
+    font-size: 15px;
     border: 2px solid #393938;
     font-family: Menlo, Monaco, monospace;
     border-radius: 15px;
@@ -62,18 +79,21 @@ body {
 
 .instructions {
     width: 218px;
-    border: 1px solid darkslategrey;
-    background-color: #828282;
+    background-color: #3f3f3f;
     color: #E5E1D3;
     padding: 10px 10px 10px 10px;
     border-radius: 5px;
     margin: 5px;
     font-size: 14px;
+    border: 1px solid lightslategray;
 }
 
 #credits {
-    background-color: #828282;
+    width: 218px;
+    background-color: #3f3f3f;
     font-size: 12px;
+    padding: 10px 10px 10px 10px;
+    border: 1px solid lightslategray;
 }
 
 #splash {
