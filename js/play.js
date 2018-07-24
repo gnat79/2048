@@ -8,7 +8,7 @@ let score = 0;
 
 // Tile properties
 let lightColor = "#E5E1D3";
-let darkColor = "#3D3C38";
+let darkColor = "#000000";
 let tileProperties = {
     2: {"bgColor": "#CAD2C5", "fgColor": darkColor, "fontSize": "48px"},
     4: {"bgColor": "#84A98C", "fgColor": darkColor, "fontSize": "48px"},
@@ -21,9 +21,9 @@ let tileProperties = {
     512: {"bgColor": "#42253B", "fgColor": lightColor, "fontSize": "40px"},
     1024: {"bgColor": "#832232", "fgColor": lightColor, "fontSize": "32px"},
     2048: {"bgColor": "#963D5A", "fgColor": lightColor, "fontSize": "32px"},
-    4096: {"bgColor": "#C16E70", "fgColor": lightColor, "fontSize": "32px"},
-    8192: {"bgColor": "#9E5E31", "fgColor": darkColor, "fontSize": "32px"},
-    16384: {"bgColor": "#FF6F59", "fgColor": darkColor, "fontSize": "24px"},
+    4096: {"bgColor": "#000000", "fgColor": lightColor, "fontSize": "32px"},
+    8192: {"bgColor": "#fff900", "fgColor": darkColor, "fontSize": "32px"},
+    16384: {"bgColor": "#006f34", "fgColor": lightColor, "fontSize": "28px"},
 };
 
 
@@ -36,11 +36,11 @@ $().ready(function () {
     // Add a tile where clicked, or else double the value of the clicked tile.
     $("#game_board").on('mousedown', 'div.tile', function () {
         if ($(this).hasClass("active")) {
-            let [row, col] = getPosition($(this));
+            let [row, col] = getTilePosition($(this));
             board[row][col] *= 2;
             updateTile($(this));
         } else {
-            let [row, col] = getPosition($(this));
+            let [row, col] = getTilePosition($(this));
             addTile(row, col, 2);
         }
         return false;
@@ -148,7 +148,7 @@ function slideTiles(direction) {
 }
 
 function updateTile($tile) {
-    let [row, col] = getPosition($tile);
+    let [row, col] = getTilePosition($tile);
     let value = board[row][col];
     if (value < 16385) {
         $tile.text(value);
@@ -170,7 +170,7 @@ function addTile(row, col, value) {
     $("#game_board").append($newTile);
 }
 
-function getPosition($tile) {
+function getTilePosition($tile) {
     let thisTileClasses = $tile.attr("class");
     let row = (thisTileClasses.match(/row(\d)/))[1];
     let col = (thisTileClasses.match(/col(\d)/))[1];
@@ -196,7 +196,7 @@ function updateScoreDisplay() {
 
 function slideTile($tile, direction) {
     let movedTile = false;
-    let [row, col] = getPosition($tile);
+    let [row, col] = getTilePosition($tile);
     let thisTileValue = board[row][col];
     switch (direction) {
         case "right": {
@@ -373,26 +373,26 @@ function startGame() {
 }
 
 // Get and put for a row in the board.
-function getRow(row) {
-    return board[row];
+function getRow(rowNumber) {
+    return board[rowNumber];
 }
 
-function putRow(row, array) {
-    board[row] = array;
+function putRow(rowNumber, array) {
+    board[rowNumber] = array;
 }
 
 // Get and put for a column in the board.
-function getColumn(col) {
+function getColumn(colNumber) {
     let column = [];
     for (let i = 0; i < 4; i++) {
-        column[i] = board[i][col];
+        column[i] = board[i][colNumber];
     }
     return column;
 }
 
-function putColumn(col, array) {
+function putColumn(colNumber, array) {
     for (let i = 0; i < 4; i++) {
-        board[i][col] = array[i];
+        board[i][colNumber] = array[i];
     }
 }
 

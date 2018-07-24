@@ -10,6 +10,11 @@ a:link, a:visited, a:hover {
     text-underline: none;
 }
 
+p {
+    padding: 2px;
+    font-size: 5em;
+}
+
 h1 {
     font-size: 36px;
     color: black;
